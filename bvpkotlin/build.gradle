@@ -23,8 +23,6 @@ android {
                 outputFileName = "bettervideoplayer-${variant.baseName}-${defaultConfig.versionName}.aar"
             }
         }
-
-
     }
 }
 
