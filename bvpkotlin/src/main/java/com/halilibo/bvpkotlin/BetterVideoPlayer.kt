@@ -1017,6 +1017,24 @@ class BetterVideoPlayer @JvmOverloads constructor(
         mHandler = null
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
+    override fun setSpeed(speed: Float) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && mPlayer != null) {
+            mPlayer?.let { player ->
+                try {
+                    if (player.isPlaying) {
+                        player.setPlaybackParams(player.playbackParams.setSpeed(speed))
+                    } else {
+                        player.playbackParams = player.playbackParams.setSpeed(speed)
+                        player.pause()
+                    }
+                } catch(e: Exception) {
+                    Log.e("BVPlayer", "${e.message}", e)
+                }
+            }
+        }
+    }
+
     private fun adjustAspectRatio(viewWidth: Int, viewHeight: Int, videoWidth: Int, videoHeight: Int) {
         val aspectRatio = videoHeight.toDouble() / videoWidth
         val newWidth: Int

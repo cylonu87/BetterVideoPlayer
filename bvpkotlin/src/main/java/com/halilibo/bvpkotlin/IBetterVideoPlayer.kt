@@ -120,4 +120,6 @@ internal interface IBetterVideoPlayer {
     fun setCaptionLoadListener(listener: CaptionsView.CaptionsViewLoadListener?)
 
     fun removeCaptions()
+
+    fun setSpeed(speed: Float)
 }
