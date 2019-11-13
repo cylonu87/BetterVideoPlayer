@@ -14,7 +14,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.util.AttributeSet
 import android.util.Log
 import android.util.TypedValue
@@ -88,6 +88,7 @@ class BetterVideoPlayer @JvmOverloads constructor(
 
     private var mCallback: VideoCallback? = null
     private var mProgressCallback: VideoProgressCallback? = null
+    private var mOnLongClickListener: OnLongClickListener? = null
 
     private var mPlayDrawable: Drawable? = null
     private var mPauseDrawable: Drawable? = null
@@ -258,6 +259,10 @@ class BetterVideoPlayer @JvmOverloads constructor(
                 startVolume = am?.getStreamVolume(AudioManager.STREAM_MUSIC) ?: 100
                 mPositionTextView.visibility = View.VISIBLE
             }
+        }
+
+        override fun onLongPress() {
+            mOnLongClickListener?.onLongClick(this@BetterVideoPlayer)
         }
     }
 
@@ -482,6 +487,8 @@ class BetterVideoPlayer @JvmOverloads constructor(
                 }
                 mPlayer?.prepareAsync()
             } catch (e: IOException) {
+                throwError(e)
+            } catch (e: IllegalStateException) {
                 throwError(e)
             }
         }
@@ -1033,6 +1040,10 @@ class BetterVideoPlayer @JvmOverloads constructor(
                 }
             }
         }
+    }
+
+    override fun setOnLongClickListener(onLongClickListener: View.OnLongClickListener) {
+        mOnLongClickListener = onLongClickListener
     }
 
     private fun adjustAspectRatio(viewWidth: Int, viewHeight: Int, videoWidth: Int, videoHeight: Int) {

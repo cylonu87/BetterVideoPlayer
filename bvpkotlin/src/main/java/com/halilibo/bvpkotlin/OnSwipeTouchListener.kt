@@ -24,6 +24,7 @@ internal abstract class OnSwipeTouchListener(
     private var decidedX: Float = 0.toFloat()
     private var decidedY: Float = 0.toFloat()
     private var lastClick: Long = 0
+    private var startPress: Long = 0
 
     internal enum class Direction {
         LEFT, RIGHT, UP, DOWN
@@ -37,6 +38,7 @@ internal abstract class OnSwipeTouchListener(
                 initialX = event.x
                 initialY = event.y
                 initialGesture = 0
+                startPress = System.currentTimeMillis()
             }
 
             MotionEvent.ACTION_MOVE -> {
@@ -86,6 +88,10 @@ internal abstract class OnSwipeTouchListener(
             }
 
             MotionEvent.ACTION_UP -> {
+                if(initialGesture == 0 && System.currentTimeMillis() - startPress > 500) {
+                    onLongPress()
+                }
+
                 if (initialGesture == 0) { // Finger did not move enough to trigger a swipe
                     return if (doubleTapEnabled &&
                             System.currentTimeMillis() - lastClick <= DOUBLE_TAP_THRESHOLD &&
@@ -104,6 +110,7 @@ internal abstract class OnSwipeTouchListener(
                 }
 
                 onAfterMove()
+
                 initialGesture = 0
                 return true
             }
@@ -127,6 +134,8 @@ internal abstract class OnSwipeTouchListener(
     abstract fun onAfterMove()
 
     abstract fun onBeforeMove(dir: Direction)
+
+    abstract fun onLongPress()
 
     companion object {
 

@@ -90,6 +90,12 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
+
+
+        bvp.setOnLongClickListener {
+            bvp.pause()
+            true
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

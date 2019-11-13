@@ -2,6 +2,7 @@ package com.halilibo.bvpkotlin
 
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.view.View
 import android.view.Window
 import androidx.annotation.FloatRange
 import androidx.annotation.RawRes
@@ -122,4 +123,6 @@ internal interface IBetterVideoPlayer {
     fun removeCaptions()
 
     fun setSpeed(speed: Float)
+
+    fun setOnLongClickListener(onLongClickListener: View.OnLongClickListener)
 }
