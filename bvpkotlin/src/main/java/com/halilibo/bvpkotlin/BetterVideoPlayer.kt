@@ -429,6 +429,7 @@ class BetterVideoPlayer @JvmOverloads constructor(
 
     override fun enableSwipeGestures() {
         mGestureType = GestureType.SwipeGesture
+        mWindow = null
     }
 
     override fun enableSwipeGestures(window: Window) {
